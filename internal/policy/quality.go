@@ -8,7 +8,7 @@ import (
 
 func (e Engine) Assess(readings []model.Reading, estimate model.FluxEstimate, calibration model.Calibration) (model.QualityState, float64, []model.Signal) {
 	signals := make([]model.Signal, 0, 8)
-	if len(readings) > 0 && calibration.ChamberID != readings[0].CycleID {
+	if len(readings) > 0 && calibration.ChamberID != readings[0].ChamberID {
 		signals = append(signals, model.Signal{Code: "calibration-lineage", Level: model.SignalBlocker, Blocking: true, Message: "calibration lineage is incomplete"})
 	}
 	if len(readings) < e.Thresholds.MinimumReadings {

@@ -23,7 +23,7 @@ func (l *Lab) AssessCycle(ctx context.Context, cycleID, reviewer string) (model.
 	if err != nil {
 		return model.QualityAssessment{}, err
 	}
-	calibration, err := l.CurrentCalibration(ctx, cycle.ID)
+	calibration, err := l.CurrentCalibration(ctx, cycle.ChamberID)
 	if err != nil {
 		return model.QualityAssessment{}, err
 	}
