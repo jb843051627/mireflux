@@ -24,7 +24,7 @@ func (l *Lab) RecordReading(ctx context.Context, input model.RecordReadingInput)
 	}
 	reading := model.Reading{
 		ID: input.ID, CycleID: input.CycleID, ChamberID: input.ChamberID, CollectedAt: input.CollectedAt.UTC(), CO2PPM: input.CO2PPM,
-		AirTempC: input.AirTempC, PressureKPA: input.PressureKPA, HumidityPct: input.HumidityPct, Labels: input.Labels, ReceivedAt: l.clock.Now(),
+		AirTempC: input.AirTempC, PressureKPA: input.PressureKPA, HumidityPct: input.HumidityPct, Labels: model.CloneLabels(input.Labels), ReceivedAt: l.clock.Now(),
 	}
 	if err := reading.Validate(); err != nil {
 		return model.Reading{}, err

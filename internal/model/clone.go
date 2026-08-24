@@ -10,11 +10,9 @@ func CloneStrings(values []string) []string {
 }
 
 func CloneLabels(values map[string]string) map[string]string {
-	if values == nil {
-		return map[string]string{}
+	cloned := make(map[string]string, len(values))
+	for key, value := range values {
+		cloned[key] = value
 	}
-	if len(values) == 0 {
-		return map[string]string{}
-	}
-	return values
+	return cloned
 }
