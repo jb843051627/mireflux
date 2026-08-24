@@ -1,0 +1,27 @@
+package policy
+
+import (
+	"fmt"
+
+	"github.com/jb843051627/mireflux/internal/model"
+)
+
+func CO2StepDiagnostic(readings []model.Reading) model.FieldDiagnostic {
+	samples := CO2StepSamples(readings)
+	diagnostic := fieldDiagnostic("co2-step", "carbon dioxide step", "ppm", samples, 0, 80)
+	diagnostic.Findings = append(diagnostic.Findings, fmt.Sprintf("carbon dioxide step uses %d observations", len(samples)))
+	if len(samples) > 1 {
+		diagnostic.Findings = append(diagnostic.Findings, fmt.Sprintf("trend %.4f ppm per observation", diagnostic.Trend))
+	}
+	return diagnostic
+}
+
+func CO2StepSamples(readings []model.Reading) []float64 {
+	samples := make([]float64, 0, len(readings)-1)
+	for index := 1; index < len(readings); index++ {
+		current := readings[index].CO2PPM
+		previous := readings[index-1].CO2PPM
+		samples = append(samples, current-previous)
+	}
+	return samples
+}
