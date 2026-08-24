@@ -16,7 +16,7 @@ func (s *Store) Save(ctx context.Context, kind, id string, value any) error {
 	if err != nil {
 		return fmt.Errorf("encode %s/%s: %w", kind, id, err)
 	}
-	_, err = s.db.ExecContext(context.Background(), `
+	_, err = s.db.ExecContext(ctx, `
 INSERT INTO records(kind, id, payload, updated_at) VALUES(?, ?, ?, ?)
 ON CONFLICT(kind, id) DO UPDATE SET payload = excluded.payload, updated_at = excluded.updated_at`,
 		kind, id, payload, time.Now().UTC().Format(time.RFC3339Nano))

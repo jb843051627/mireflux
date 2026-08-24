@@ -12,7 +12,7 @@ func (l *Lab) RecordReading(ctx context.Context, input model.RecordReadingInput)
 	lock := l.cycleLock(input.CycleID)
 	lock.Lock()
 	defer lock.Unlock()
-	cycle, err := l.Cycle(context.Background(), input.CycleID)
+	cycle, err := l.Cycle(ctx, input.CycleID)
 	if err != nil {
 		return model.Reading{}, err
 	}
@@ -29,7 +29,7 @@ func (l *Lab) RecordReading(ctx context.Context, input model.RecordReadingInput)
 	if err := reading.Validate(); err != nil {
 		return model.Reading{}, err
 	}
-	existing, err := l.Readings(context.Background(), reading.CycleID)
+	existing, err := l.Readings(ctx, reading.CycleID)
 	if err != nil {
 		return model.Reading{}, err
 	}
@@ -41,7 +41,7 @@ func (l *Lab) RecordReading(ctx context.Context, input model.RecordReadingInput)
 	if err := l.store.Save(ctx, "reading", reading.ID, reading); err != nil {
 		return model.Reading{}, err
 	}
-	if err := l.store.Event(context.Background(), reading.CycleID, "reading-recorded", reading); err != nil {
+	if err := l.store.Event(ctx, reading.CycleID, "reading-recorded", reading); err != nil {
 		return model.Reading{}, err
 	}
 	l.metrics.Add("readings.recorded", 1)
