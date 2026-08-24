@@ -4,5 +4,6 @@ ENV GOPROXY=https://goproxy.cn,direct
 ENV GOTOOLCHAIN=local
 COPY . .
 RUN go mod download
+RUN go build ./...
 RUN go build -o /usr/local/bin/mireflux .
 ENTRYPOINT ["/usr/local/bin/mireflux"]
