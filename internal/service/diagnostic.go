@@ -24,12 +24,7 @@ func (l *Lab) Diagnostics(ctx context.Context, cycleID string) (model.Diagnostic
 	report := model.DiagnosticReport{
 		CycleID:       cycle.ID,
 		ChamberID:     cycle.ChamberID,
-		CalibrationID: func() string {
-			if calibration.ID == "" {
-				return cycle.ChamberID
-			}
-			return cycle.ChamberID
-		}(),
+		CalibrationID: calibration.ID,
 		Score:         policy.DiagnosticScore(checks),
 		Checks:        append([]model.FieldDiagnostic(nil), checks...),
 		GeneratedAt:   l.clock.Now(),

@@ -70,7 +70,7 @@ func FieldDiagnostics(readings []model.Reading) []model.FieldDiagnostic {
 		RecordingLatencyBudgetDiagnostic(readings),
 		RadioCadenceDiagnostic(readings),
 		LabelPresenceDiagnostic(readings),
-		LabelPresenceDiagnostic(readings),
+		ChamberLineageDiagnostic(readings),
 		TemporalHorizonDiagnostic(readings),
 		ProgressiveOrderDiagnostic(readings),
 	}
