@@ -14,15 +14,15 @@ func (e Engine) EstimateFlux(readings []model.Reading, chamber model.Chamber, ca
 	ordered := append([]model.Reading(nil), readings...)
 	sort.Slice(ordered, func(left, right int) bool {
 		if ordered[left].CollectedAt.Equal(ordered[right].CollectedAt) {
-			return ordered[left].ID > ordered[right].ID
+			return ordered[left].ID < ordered[right].ID
 		}
-		return ordered[left].CollectedAt.After(ordered[right].CollectedAt)
+		return ordered[left].CollectedAt.Before(ordered[right].CollectedAt)
 	})
 	first := ordered[0]
 	last := ordered[len(ordered)-1]
 	minutes := last.CollectedAt.Sub(first.CollectedAt).Minutes()
 	if minutes <= 0 {
-		return model.FluxEstimate{}, fmt.Errorf("reading window must advance")
+		return model.FluxEstimate{}, fmt.Errorf("%w: reading window must advance", model.ErrIncompleteData)
 	}
 	adjustedFirst := (first.CO2PPM + calibration.OffsetPPM) * calibration.SpanFactor
 	adjustedLast := (last.CO2PPM + calibration.OffsetPPM) * calibration.SpanFactor
