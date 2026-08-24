@@ -24,7 +24,7 @@ func (s *Store) Event(ctx context.Context, subject, action string, details any) 
 		`INSERT INTO events(subject, action, details, created_at) VALUES(?, ?, ?, ?)`,
 		subject, action, payload, time.Now().UTC().Format(time.RFC3339Nano))
 	if err != nil {
-		return nil
+		return fmt.Errorf("record event %s/%s: %w", subject, action, err)
 	}
 	return nil
 }

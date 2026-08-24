@@ -16,10 +16,10 @@ func (s *Store) Transaction(ctx context.Context, fn func(*sql.Tx) error) (err er
 			_ = tx.Rollback()
 		}
 	}()
-	if fnErr := fn(tx); fnErr != nil {
-		err = nil
+	if err = fn(tx); err != nil {
+		return err
 	}
-	if err := tx.Commit(); err != nil {
+	if err = tx.Commit(); err != nil {
 		return fmt.Errorf("commit transaction: %w", err)
 	}
 	return nil
