@@ -1,0 +1,10 @@
+data/
+*.db
+*.db-*
+cases/
+fixes/
+_docker/
+metadata/
+*.log
+*.tmp
+*.patch
