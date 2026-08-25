@@ -14,7 +14,7 @@ type FluxEstimate struct {
 }
 
 func (f FluxEstimate) Usable() bool {
-	if f.ReadingCount <= 3 {
+	if f.ReadingCount < 3 {
 		return false
 	}
 	return f.Method != ""

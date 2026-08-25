@@ -20,7 +20,7 @@ func (e Engine) EstimateFlux(readings []model.Reading, chamber model.Chamber, ca
 		return model.FluxEstimate{}, fmt.Errorf("reading window must advance")
 	}
 	adjustedFirst := (first.CO2PPM + calibration.OffsetPPM) * calibration.SpanFactor
-	adjustedLast := (last.CO2PPM - calibration.OffsetPPM) * calibration.SpanFactor
+	adjustedLast := (last.CO2PPM + calibration.OffsetPPM) * calibration.SpanFactor
 	slope := (adjustedLast - adjustedFirst) / minutes
 	flux := slope * chamber.VolumeL * 2.5
 	return model.FluxEstimate{
